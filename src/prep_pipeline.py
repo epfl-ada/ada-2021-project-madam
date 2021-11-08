@@ -9,11 +9,12 @@ import pandas as pd
 from prep_utilities import * 
 
 #Pipeline for data prep
-def prep_docs(doc, fix_contract = True, del_stopwords = True, lemmatize = True):
+#Pipeline for data prep
+def prep_docs(doc, doc2, fix_contract = True, lemmatize = True):
     copy_doc=doc.copy()
     
     #prepare clean tokens
-    copy_doc['tokens']=prep_tokens(doc['quotation'], fix_contract, del_stopwords, lemmatize)
+    copy_doc['tokens']=prep_tokens(doc['quotation'], fix_contract, lemmatize)
     
     #filter out unnecessary rows
     copy_doc=filter_quotes(copy_doc)
@@ -28,11 +29,10 @@ def prep_docs(doc, fix_contract = True, del_stopwords = True, lemmatize = True):
     #get qid for replaced speakers
     missing_qids=copy_doc[copy_doc['qids'].apply(lambda x: x==[])]
     copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
-    missing_qids['qids']=missing_qids['speaker'].apply(lambda x: find_qids(x, speaker_attributes))
+    missing_qids['qids']=missing_qids['speaker'].apply(lambda x: find_qids(x, doc2))
     copy_doc=copy_doc.append(missing_qids, ignore_index=True)
 
     #get the gender of the speaker
-    copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x,speaker_attributes))
-    
+    copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x,doc2))
     
     return copy_doc

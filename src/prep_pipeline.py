@@ -13,6 +13,9 @@ from prep_utilities import *
 def prep_docs(doc, doc2, fix_contract = True, lemmatize = True):
     copy_doc=doc.copy()
     
+    #get date in YYYY-MM format
+    copy_doc['date']= copy_doc['date'].apply(lambda x: get_yyyy_mm(x))
+    
     #prepare clean tokens
     copy_doc['tokens']=prep_tokens(doc['quotation'], fix_contract, lemmatize)
     
@@ -31,7 +34,10 @@ def prep_docs(doc, doc2, fix_contract = True, lemmatize = True):
     copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
     missing_qids['qids']=missing_qids['speaker'].apply(lambda x: find_qids(x, doc2))
     copy_doc=copy_doc.append(missing_qids, ignore_index=True)
-
+    
+    #If the qid is still missing we drop that row
+    copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
+    
     #get the gender of the speaker
     copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x,doc2))
     

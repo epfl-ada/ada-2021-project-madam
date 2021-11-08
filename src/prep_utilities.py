@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #Utiliy functions in this file include:
+#date transformation
 #token preparation
 #filtering unnecessary rows
 #extracting domain names from urls
@@ -24,6 +25,13 @@ nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
 
 #Save real words in to wordlist
 wordlist = words.words()
+
+def get_yyyy_mm(date):
+    """
+    For a given date format this function returns YYYY-MM format
+    """
+    yyyy_mm=date.to_period('m')
+    return yyyy_mm
 
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """https://spacy.io/api/annotation"""

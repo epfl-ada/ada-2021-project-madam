@@ -4,6 +4,7 @@ Created on Mon Nov  8 13:07:44 2021
 
 @author: tsfei
 """
+import numpy as np
 from sklearnex import patch_sklearn
 patch_sklearn()
 from sklearn.feature_extraction.text import TfidfVectorizer

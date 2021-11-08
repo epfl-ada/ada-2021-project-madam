@@ -6,7 +6,7 @@ Created on Mon Nov  8 11:17:39 2021
 """
 
 from text_scores import dale_chall_score
-from thematic_processing import prepare_docs, topic_cluster
+from thematic_processing import prepare_docs, topic_cluster, grid_search
 import pandas as pd
 import re
 
@@ -38,6 +38,8 @@ if __name__ == '__main__':
     # Remove distracting single quotes
     data = [re.sub("\'", "", sent) for sent in data]
 
-    data = prepare_docs(data[::400])
+    data = prepare_docs(data[::100])
 
-    topic_cluster(data, 5)
+    grid_search(data, [10, 15, 20, 25, 30], [.5, .7, .9])
+
+    # topic_cluster(data, 10)

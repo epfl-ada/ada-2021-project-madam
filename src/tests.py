@@ -38,7 +38,6 @@ if __name__ == '__main__':
     # Remove distracting single quotes
     data = [re.sub("\'", "", sent) for sent in data]
 
-    data1 = prepare_docs(data[::400])
+    data = prepare_docs(data[::400])
 
-
-    #topic_cluster(data, 5)
+    topic_cluster(data, 5)

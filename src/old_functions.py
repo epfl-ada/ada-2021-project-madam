@@ -4,6 +4,10 @@ Created on Mon Nov  8 13:07:44 2021
 
 @author: tsfei
 """
+from sklearnex import patch_sklearn
+patch_sklearn()
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 def words_cleaner(words, min_size = 0, del_nums = True):
     """

@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from prep_utilities import * 
 
+#Pipeline for data prep
 def prep_docs(doc, fix_contract = True, del_stopwords = True, lemmatize = True):
     copy_doc=doc.copy()
     
@@ -25,17 +26,13 @@ def prep_docs(doc, fix_contract = True, del_stopwords = True, lemmatize = True):
     copy_doc=replace_none_speaker(copy_doc)
     
     #get qid for replaced speakers
-    #This is getting out of hand HELPPPPPPPPPPP
-    for i in range(len(copy_doc)):
-        if copy_doc['qids'][i]==[]:
-            copy_doc['qids'][i]=find_qids(copy_doc['speaker'][i])
-        else:
-            copy_doc['qids'][i]=copy_doc['qids'][i]
-    
-    #copy_doc['qids']=copy_doc['speaker'].apply(lambda x: find_qids(x) if x==[] else x)
+    missing_qids=copy_doc[copy_doc['qids'].apply(lambda x: x==[])]
+    copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
+    missing_qids['qids']=missing_qids['speaker'].apply(lambda x: find_qids(x, speaker_attributes))
+    copy_doc=copy_doc.append(missing_qids, ignore_index=True)
 
     #get the gender of the speaker
-    copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x))
+    copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x,speaker_attributes))
     
     
     return copy_doc

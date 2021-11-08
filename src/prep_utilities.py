@@ -18,7 +18,9 @@ import string
 from nltk.corpus import stopwords, words
 from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag, word_tokenize 
+from urllib.parse import urlparse
 nltk.download(['words','averaged_perceptron_tagger'])
+
 
 wordlist = words.words()
 

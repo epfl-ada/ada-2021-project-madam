@@ -25,11 +25,10 @@ To study the different aspects mentioned in the research questions, several meth
 - <u>Text Sentiment :</u> TBD;
 - <u>Text Readability / Complexity :</u> Using the [Dale-Chall Readability Formula](https://en.wikipedia.org/wiki/Dale%E2%80%93Chall_readability_formula) we can measure the 'difficulty' of any given text (the base assumption is that people who write more 'difficult' text will, tendentially, have a higher level of education).
 
-<b>Note :</b> These methods required the usage of external packages. For a more detailed exposition of the packages used, please see [requirements.txt](link). 
+<b>Note :</b> These methods required the usage of external packages. For a more detailed exposition of the packages used, please see [requirements.txt](https://github.com/epfl-ada/ada-2021-project-madam/blob/main/requirements.txt).
 
 ### Proposed Timeline
 
--- Write down timeline here --
 
 ### Internal Organization
 
@@ -43,7 +42,6 @@ To study the different aspects mentioned in the research questions, several meth
 
 ### Questions for TAs
 
--- If we have questions for the TAs, write them down here --
 
 ### Repo Architecture
 └───src

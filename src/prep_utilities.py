@@ -140,11 +140,9 @@ def replace_none_speaker(doc):
     This function replaces speakers originally assigned 'None' with the speaker that have second highest probability  
     """
     doc_copy=doc.copy()
-    for i in range(len(doc_copy)):
-        if doc_copy['speaker'][i]=='None':
-            doc_copy['speaker'][i]=doc_copy['probas'][i][1][0]
-    doc_copy.drop(columns='probas', inplace=True)
-    return doc_copy      
+
+    doc_copy['speaker'][doc_copy['speaker'] == 'None'] = doc_copy['probas'][doc_copy['speaker'] == 'None'].apply(lambda x: x[1][0])
+    return doc_copy        
 
 def find_qids(speaker, doc_speaker_attributes):
     """

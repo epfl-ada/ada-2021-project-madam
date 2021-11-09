@@ -1,4 +1,4 @@
-## [TITLE]
+## MIND THE GAP
 
 ### ABSTRACT
 
@@ -10,18 +10,22 @@
 
 ### Proposed additional datasets
 
--- If we use any additional datasets, write them down here
+From the current outlook at the project, there is no prospect of any additional datasets required.
 
 ### Methods
 
-To study the different aspects mentioned above, several methods need to be used.
+Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline until it was in a state where it could be processed.
+- <u>Structural Changes :</u> ;
+- <u>Content Changes :</u> The quotes themselves were manipulated into a form easier to analyze. For that, the contractions were expanded (don't -> do not, yall -> yall), the sentences were tokenized, the stopwords were removed and the words were lemmatized. This latter manipulation allowed to reduce the variance of words, creating a more representative bag of words (BoG).
 
-- <u>Characteristics Identification (Gender, Race, Age) :</u> Data extracted from Wikidata (WHAT TO DO WHEN NOT POSSIBLE? GENDER CAN BE TAKEN FROM NLTK, BUT RACE AND AGE DOESN'T SEEM FEASIBLE)
-- <u>Theme Identification :</u> For a set of quotes, the main themes identification is performed in two steps. First, 'Term Frequency–Inverse Document Frequency' (or [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf)) allows to find the main keywords among the quotes. Then, 'Latent Dirichlet Allocation' (or [LDA](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)) clusters these keywords into topics. It is necessary to manually label the topics afterwards, by human interpretation of the results.
-- <u>Text Sentiment :</u> (STILL NEED TO LOOK UP FOR SOME PACKAGES FOR THIS. PROBABLY NLTK HAS SOMETHING)
-- <u>Text Readability / Complexity :</u> Using the [Dale-Chall Readability Formula](https://en.wikipedia.org/wiki/Dale%E2%80%93Chall_readability_formula) we can measure the 'difficulty' of any given text (the base assumption is that people who write more 'difficult' text will, tendentially, have a higher level of education)
-- <u>Some kind of policital analysis :</u> (GOING TO LOOK INTO THIS, BUT SEEMS FUNDAMENTALLY THE SAME AS THEME IDENTIFICATION)
+To study the different aspects mentioned in the research questions, several methods were used.
 
+- <u>Characteristics Identification :</u> Data extracted from Quotebank or Wikidata (via QIds);
+- <u>Theme Identification :</u> To identify the main topics in a set of quotes, we used 'Latent Dirichlet Allocation' (or [LDA](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)). This model clusters the BoG provided into a set of <u>n</n> topics (where <u>n</u> is a hyperparameter). Then, it provides the main words associated to each topic and, by human interpretation, it is possible to label it. This model, after trained, can be used to identify the main topic in any given quote;
+- <u>Text Sentiment :</u> TBD;
+- <u>Text Readability / Complexity :</u> Using the [Dale-Chall Readability Formula](https://en.wikipedia.org/wiki/Dale%E2%80%93Chall_readability_formula) we can measure the 'difficulty' of any given text (the base assumption is that people who write more 'difficult' text will, tendentially, have a higher level of education).
+
+<b>Note :</b> These methods required the usage of external packages. For a more detailed exposition of the packages used, please see [requirements.txt](link). 
 
 ### Proposed Timeline
 
@@ -29,8 +33,31 @@ To study the different aspects mentioned above, several methods need to be used.
 
 ### Internal Organization
 
--- Define internal organization here --
+- Data Extraction : André, Khahn, Medya
+- Pre-processing pipeline : Medya, Tomás
+- Study of best methods : Khahn, Tomás
+- Implementation of best methods : Medya, Tomás
+- Runtime Optimization : André, Tomás
+- Results Interpretation : 
+- Website Construction (for the 'Data Story') : 
 
 ### Questions for TAs
 
 -- If we have questions for the TAs, write them down here --
+
+### Repo Architecture
+└───src
+
+    └─── prep_pipeline.py
+    
+    └─── prep_utilities.py
+    
+    └─── sampling_data.py
+    
+    └─── text_scores.py
+    
+    └─── thematic_processing.py
+    
+└─── Initial_Analysis.ipynb
+
+

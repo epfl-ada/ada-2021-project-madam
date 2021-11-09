@@ -13,7 +13,8 @@
 
 import numpy as np
 import pandas as pd
-import nltk, gensim, spacy, contractions, string
+import nltk, gensim, spacy, string
+# import contractions
 from nltk.corpus import stopwords, words
 #from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag, word_tokenize 
@@ -39,6 +40,8 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
+
+
 def prep_tokens(docs, fix_contract = True, lemmatize = True):
     """
     This function takes a list of docs, and prepares them for analysis.
@@ -62,7 +65,7 @@ def prep_tokens(docs, fix_contract = True, lemmatize = True):
     for doc in docs:
         if fix_contract:
             # expand contractions
-            doc = contractions.fix(doc)
+            # doc = contractions.fix(doc)
         # tokenize doc and remove punctuation
         token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
 

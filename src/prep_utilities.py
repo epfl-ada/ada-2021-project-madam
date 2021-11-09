@@ -12,12 +12,17 @@
 ####double check unnecessary imports###
 
 import numpy as np
+<<<<<<< HEAD
 import pandas as pd
 import nltk, gensim, spacy, string
 # import contractions
+=======
+#import pandas as pd
+import nltk, gensim, spacy, contractions#, string
+>>>>>>> 061ab144794ee3b2cf12a68cf30260bf12a9d74c
 from nltk.corpus import stopwords, words
 #from nltk.stem import WordNetLemmatizer
-from nltk import pos_tag, word_tokenize 
+#from nltk import pos_tag, word_tokenize
 from urllib.parse import urlparse
 nltk.download(['words','averaged_perceptron_tagger'])
 
@@ -40,9 +45,13 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
+<<<<<<< HEAD
 
 
 def prep_tokens(docs, fix_contract = True, lemmatize = True):
+=======
+def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
+>>>>>>> 061ab144794ee3b2cf12a68cf30260bf12a9d74c
     """
     This function takes a list of docs, and prepares them for analysis.
     Preparation includes:
@@ -68,7 +77,9 @@ def prep_tokens(docs, fix_contract = True, lemmatize = True):
             # doc = contractions.fix(doc)
         # tokenize doc and remove punctuation
         token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
-
+        if del_stop:
+            # remove stopwords
+            token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]
         if lemmatize:
             # Do lemmatization keeping only Noun, Adj, Verb, Adverb
             token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
@@ -82,33 +93,33 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
         - less than min_size words in the selected column
         - less than min_true_size real words in the selected columns
         - more than none_prob_threshold probability assigned to speaker as 'None'
-    
+
     Parameters
     ----------
     doc : Dataframe
         Quotes dataframe
-    
-        
+
+
     Returns
     -------
     doc_new : Dataframe
         Filtered version of original doc.
     """
-    
-    
+
     #delete rows which have less than min_size words and reset index
     doc_new=doc[doc['tokens'].map(len)>min_size].reset_index(drop=True)
-    
+
     #delete rows which have less than min_true_size real words and reset index
     true_word_count=[]
-    for words in doc_new['tokens']:
-        true_word=[]
-        for w in words:
-            true_word.append(w in wordlist)
-        true_word_count.append(sum(true_word))
+    for tokens in doc_new['tokens']:
+        # true_word=[]
+        # for w in words:
+        #     true_word.append(w in wordlist)
+        # true_word_count.append(sum(true_word))
+        true_word_count.append(sum(np.in1d(tokens, wordlist)))
     doc_new['true']=true_word_count
     doc_new=doc_new[doc_new['true']>min_true_size].drop(columns='true').reset_index(drop=True)
-    
+
     #delete rows which have more than none_prob_threshold probability assigned to speaker as 'None'
     """ind_list=[]
     for ind, i in enumerate(doc_new['probas']):
@@ -118,7 +129,7 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
                     ind_list.append(ind)
     doc_new.drop(doc_new.index[ind_list], axis=0, inplace=True)"""
     none_rows = doc_new[(doc_new['speaker'] == 'None') & (doc_new['probas'].apply(lambda x: float(x[0][1])) > none_prob_threshold)]
-    
+
     doc_new = doc_new.drop(none_rows.index, axis=0)
 
     return doc_new.reset_index(drop=True)
@@ -140,12 +151,12 @@ def get_website(doc):
 
 def replace_none_speaker(doc):
     """
-    This function replaces speakers originally assigned 'None' with the speaker that have second highest probability  
+    This function replaces speakers originally assigned 'None' with the speaker that have second highest probability
     """
     doc_copy=doc.copy()
 
     doc_copy['speaker'][doc_copy['speaker'] == 'None'] = doc_copy['probas'][doc_copy['speaker'] == 'None'].apply(lambda x: x[1][0])
-    return doc_copy        
+    return doc_copy
 
 def find_qids(speaker, doc_speaker_attributes):
     """
@@ -161,7 +172,7 @@ def find_qids(speaker, doc_speaker_attributes):
 def find_gender(qids, doc_speaker_attributes):
     """
     This function finds the gender of the speaker according to speaker_attributes
-    If there's multiple qids with different genders, returns None 
+    If there's multiple qids with different genders, returns None
     """
     if len(qids)==0:
         return None
@@ -169,7 +180,7 @@ def find_gender(qids, doc_speaker_attributes):
     else:
     # Check every qid, if some has gender != None, then we choose that one
         for i in range(len(qids)):
-            try:  
+            try:
                 gender = doc_speaker_attributes.loc[qids[i]]['gender_label']
             except:
                 gender = None

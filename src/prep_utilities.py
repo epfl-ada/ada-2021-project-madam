@@ -39,7 +39,7 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
-def prep_tokens(docs, fix_contract = True, lemmatize = True):
+def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
     """
     This function takes a list of docs, and prepares them for analysis.
     Preparation includes:
@@ -65,7 +65,9 @@ def prep_tokens(docs, fix_contract = True, lemmatize = True):
             doc = contractions.fix(doc)
         # tokenize doc and remove punctuation
         token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
-
+        if del_stop:
+            # remove stopwords
+            token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]
         if lemmatize:
             # Do lemmatization keeping only Noun, Adj, Verb, Adverb
             token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
@@ -91,7 +93,6 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
     doc_new : Dataframe
         Filtered version of original doc.
     """
-    
     
     #delete rows which have less than min_size words and reset index
     doc_new=doc[doc['tokens'].map(len)>min_size].reset_index(drop=True)

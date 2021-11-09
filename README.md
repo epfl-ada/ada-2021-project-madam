@@ -44,22 +44,22 @@ To study the different aspects mentioned in the research questions, several meth
 
 
 ### Repo Architecture
-'''
-└───src
+<pre>
+├─── src
 
-    └─── prep_pipeline.py
+│   ├─── prep_pipeline.py
     
-    └─── prep_utilities.py
+│   ├─── prep_utilities.py
     
-    └─── sampling_data.py
+│   ├─── sampling_data.py
     
-    └─── text_scores.py
+│   ├─── text_scores.py
     
-    └─── thematic_processing.py
+│   └─── thematic_processing.py
     
-└─── Initial_Analysis.ipynb
+├─── Initial_Analysis.ipynb
 
 └─── requirements.txt
-'''
+</pre>
 
 

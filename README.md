@@ -44,6 +44,7 @@ To study the different aspects mentioned in the research questions, several meth
 
 
 ### Repo Architecture
+'''
 └───src
 
     └─── prep_pipeline.py
@@ -57,5 +58,8 @@ To study the different aspects mentioned in the research questions, several meth
     └─── thematic_processing.py
     
 └─── Initial_Analysis.ipynb
+
+└─── requirements.txt
+'''
 
 

@@ -9,6 +9,9 @@ from sklearnex import patch_sklearn
 patch_sklearn()
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+# packages needed for LDA grouping
+from gensim import corpora, models
+
 
 def words_cleaner(words, min_size = 0, del_nums = True):
     """
@@ -83,3 +86,38 @@ def keywords_extractor_sklearn(docs, num_words = 100, min_size = 0):
     top_words = words_cleaner(words[tfidf_sorting], min_size = min_size)[:num_words]
 
     return top_words
+
+def topic_cluster(docs, num_topics = 1):
+    """
+    This function takes a set of documents and clusters them into topics.
+
+    Parameters
+    ----------
+    docs : list
+        List of tokenized documents to cluster into categories.
+    num_topics : int
+        Number of topics to model.
+
+    Returns
+    -------
+    ???
+    """
+    docs = [doc.split() for doc in docs]
+    dictionary_LDA = corpora.Dictionary(docs)
+
+    corpus = [dictionary_LDA.doc2bow(list_of_tokens) for list_of_tokens in docs]
+
+    lda_model = models.LdaModel(corpus,
+                                num_topics=num_topics,
+                                id2word=dictionary_LDA,
+                                passes=5,
+                                alpha=[0.01]*num_topics,
+                                eta=[0.01]*len(dictionary_LDA.keys())
+                                )
+
+    for i,topic in lda_model.show_topics(formatted=True, num_topics=num_topics, num_words=10):
+        print(str(i)+": "+ topic)
+        print()
+
+    for corpse in corpus:
+        print(lda_model[corpse])

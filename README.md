@@ -55,9 +55,9 @@ In order to conduct this analysis and use this methods, several assumptions had 
 
 ### Internal Organization
 
-- Data Extraction : André, Khahn, Medya
+- Data Extraction : André, Khanh, Medya
 - Pre-processing pipeline : Medya, Tomás
-- Study of best methods : Khahn, Tomás
+- Study of best methods : Khanh, Tomás
 - Implementation of best methods : Medya, Tomás
 - Runtime Optimization : André, Tomás
 - Results Interpretation : 

@@ -6,7 +6,7 @@
 
 #import numpy as np
 #import pandas as pd
-from prep_utilities import *
+from src.prep_utilities import *
 
 #Pipeline for data prep
 #Pipeline for data prep

@@ -1,6 +1,6 @@
 numpy==1.21.4
 pandas==1.3.4
-nltk==3.6.4
+nltk==3.6.5
 gensim==4.1.2
 spacy==3.2
 tqdm==4.62.3
@@ -11,7 +11,12 @@ matplotlib==3.4.3
 scipy==1.7.2
 contractions==0.0.55
 ray==1.8.0
-IPython==7.12.0
+IPython==7.29.0
 scikit-learn-intelex==2021.4.0
 tune_sklearn==0.4.1
 cloudpickle==2.0.0
+seaborn==0.11.2
+ipykernel==6.5.0
+
+# spacy's model
+# https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0.tar.gz#egg=en_core_web_sm

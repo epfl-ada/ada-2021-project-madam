@@ -7,7 +7,7 @@ Created on Mon Nov  8 11:17:39 2021
 
 from text_scores import dale_chall_score
 from thematic_processing import *
-import modin.pandas as pd
+import pandas as pd
 import time
 import re
 
@@ -39,11 +39,11 @@ if __name__ == '__main__':
     # Remove distracting single quotes
     data = [re.sub(r"\'", "", sent) for sent in data]
 
-    data = prepare_docs(data[::400], del_stop = False)
+    data = prepare_docs(data[::], del_stop = False)
 
     # print('DATA HAS BEEN PROCESSED')
     start = time.time()
-    vectorizer, docword_matrix, best_lda_model = grid_search(data, [10, 15, 20, 25], [.5, .7, .9], plot_res = True)
+    vectorizer, docword_matrix, best_lda_model = grid_search(data, [10, 15, 20, 25], [.7], plot_res = False)
     print(f'It took {time.time() - start} to do grid search on {len(data)} documents.')
 
     # print('GRID SEARCH IS COMPLETED')

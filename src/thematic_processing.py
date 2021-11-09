@@ -1,7 +1,9 @@
 # view https://www.machinelearningplus.com/nlp/topic-modeling-python-sklearn-examples/ for some guidelines
 
 import numpy as np
-import modin.pandas as pd
+import ray
+ray.init(log_to_driver=False, ignore_reinit_error=True)
+import pandas as pd
 from IPython.display import display
 
 # patch_sklearn is an Intel® patch that allows to optimize sklearn operations
@@ -9,7 +11,9 @@ from sklearnex import patch_sklearn
 patch_sklearn()
 from sklearn.decomposition import LatentDirichletAllocation#, TruncatedSVD
 from sklearn.feature_extraction.text import CountVectorizer#, TfidfVectorizer
-from sklearn.model_selection import GridSearchCV
+
+from tune_sklearn import TuneGridSearchCV
+# from sklearn.model_selection import GridSearchCV
 from pprint import pprint
 
 # Plotting tools
@@ -119,7 +123,11 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
     lda = LatentDirichletAllocation()
 
     # Init Grid Search Class
-    model = GridSearchCV(lda, param_grid=search_params)
+    #model = GridSearchCV(lda, param_grid=search_params)
+    model = TuneGridSearchCV(lda,
+                               param_grid = search_params,
+                               early_stopping = "MedianStoppingRule",
+                               max_iters = 5)
 
     # Do the Grid Search
     model.fit(docword_matrix)

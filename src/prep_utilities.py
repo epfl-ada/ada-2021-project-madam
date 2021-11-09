@@ -12,14 +12,8 @@
 ####double check unnecessary imports###
 
 import numpy as np
-<<<<<<< HEAD
-import pandas as pd
-import nltk, gensim, spacy, string
-# import contractions
-=======
 #import pandas as pd
 import nltk, gensim, spacy, contractions#, string
->>>>>>> 061ab144794ee3b2cf12a68cf30260bf12a9d74c
 from nltk.corpus import stopwords, words
 #from nltk.stem import WordNetLemmatizer
 #from nltk import pos_tag, word_tokenize
@@ -45,13 +39,7 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
-<<<<<<< HEAD
-
-
-def prep_tokens(docs, fix_contract = True, lemmatize = True):
-=======
 def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
->>>>>>> 061ab144794ee3b2cf12a68cf30260bf12a9d74c
     """
     This function takes a list of docs, and prepares them for analysis.
     Preparation includes:
@@ -74,9 +62,9 @@ def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
     for doc in docs:
         if fix_contract:
             # expand contractions
-            # doc = contractions.fix(doc)
-        # tokenize doc and remove punctuation
-        token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
+            doc = contractions.fix(doc)
+            # tokenize doc and remove punctuation
+            token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
         if del_stop:
             # remove stopwords
             token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]

@@ -24,7 +24,7 @@ nltk.download(['words','averaged_perceptron_tagger'])
 nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
 
 #Save real words in to wordlist
-wordlist = words.words()
+wordlist = set(words.words())
 
 def get_yyyy_mm(date):
     """
@@ -72,6 +72,7 @@ def prep_tokens(docs, fix_contract = True, lemmatize = True):
         clean_docs.append(token_doc)
     return clean_docs
 
+# Test filter
 def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
     """
     This function receives a document and deletes rows which have
@@ -81,13 +82,13 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
     
     Parameters
     ----------
-    doc : list
-        List of docs to prepare.
+    doc : Dataframe
+        Quotes dataframe
     
         
     Returns
     -------
-    doc_new : list
+    doc_new : Dataframe
         Filtered version of original doc.
     """
     
@@ -105,15 +106,18 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
     doc_new['true']=true_word_count
     doc_new=doc_new[doc_new['true']>min_true_size].drop(columns='true').reset_index(drop=True)
     
-    #delte rows which have more than none_prob_threshold probability assigned to speaker as 'None'
-    ind_list=[]
+    #delete rows which have more than none_prob_threshold probability assigned to speaker as 'None'
+    """ind_list=[]
     for ind, i in enumerate(doc_new['probas']):
         for j in range(len(i)):
             if i[j][0]=='None':
                 if float(i[j][1])>none_prob_threshold:
                     ind_list.append(ind)
-    doc_new.drop(doc_new.index[ind_list], axis=0, inplace=True)
+    doc_new.drop(doc_new.index[ind_list], axis=0, inplace=True)"""
+    none_rows = doc_new[(doc_new['speaker'] == 'None') & (doc_new['probas'].apply(lambda x: float(x[0][1])) > none_prob_threshold)]
     
+    doc_new = doc_new.drop(none_rows.index, axis=0)
+
     return doc_new.reset_index(drop=True)
 
 def get_website(doc):

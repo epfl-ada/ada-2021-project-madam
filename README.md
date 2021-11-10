@@ -13,7 +13,7 @@ On this project we set ourselves out to analyze whether there is any fundamental
 - What is the sentiment (negative, neutral, positive) associated to the quotes by gender, potentially distributed by themes? *
 - What is the complexity of the speech from the quoted individuals, by gender and by theme?
 
-Then, we want to study a couple of very influencial websites [WE STILL HAVE TO DECIDE WHICH], and compare the sentiment and portion of the quotes by gender, to decide which ones have a more gender equal roster of quotes.
+Then, we want to study a couple of very influencial websites (which ones is still TBD), and compare the sentiment and portion of the quotes by gender, to decide which ones have a more gender equal roster of quotes.
 
 \*While quotes are inherently unchangeable, the context in which they are used and the predominance of their sentiment can reveal information about the sources predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias which would reflect a different image for each gender.
 
@@ -29,8 +29,8 @@ From the current outlook of the project, there is no prospect of any additional 
 ### Methods
 
 Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline until it was in a state where it could be processed.
-- **Data Sampling :** As the orginal dataset is pretty sizeable, the data was sampled to be utilized during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
-- **Structural Changes :** ;
+- **Data Sampling :** As the original dataset is pretty sizeable, the data was sampled to be used during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
+- **Structural Changes :** (TALK ABOUT REMOVAL OF ROWS, REPLACEMENT OF GENDERS,...);
 - **Content Changes :** The quotes were manipulated into a form easier to analyze. For that, the sentences were tokenized, the stopwords were removed and the words were lemmatized. These allowed to reduce the variance of words, creating a more meaningful bag of words (BoG).
 
 To study the different aspects mentioned in the research questions, several methods were used.
@@ -42,7 +42,7 @@ To study the different aspects mentioned in the research questions, several meth
 
 In order to conduct this analysis and use this methods, several assumptions had to be made. STILL NEED TO WRITE THIS MORE CAREFULLY
 
-- **Topic generalization :** Since unsupervised learning is computationally expensive, it is not necessary to train the LDA the model with the whole dataset to get the classification of the topics. We assumed that, with a large enough sample, we can classify the topics presented with high accuracy. The topics of the remaining quotes can be classified using the model generated from this sampled training set.
+- **Topic generalization :** Since unsupervised learning is computationally expensive, it is not necessary to train the model with the whole dataset to get the classification of the topics. We assumed that, with a large enough sample, we can classify the topics presented with high accuracy. The topics of the remaining quotes can be classified using the model generated from this sampled training set, as they will most likely be repetitions / variations of the topics observed before.
 - **Relationship between complexity and education level :** The base assumption used to establish this connection is that people who write more 'difficult' text will, tendentially, have a higher level of education. In fact the Dale-Chall Readability Formula can be converted directly into an indication of the school-level required to understand the text, which we assume can be correlated with the education level required to generate the text.
 
 **_Note :_** These methods required the usage of external packages. For a more detailed exposition of the packages used, please see [requirements.txt](https://github.com/epfl-ada/ada-2021-project-madam/blob/main/requirements.txt).
@@ -72,6 +72,8 @@ In order to conduct this analysis and use this methods, several assumptions had 
 ### Repo Architecture
 <pre>
 ├─── src
+│   ├─── contractions.py : file containing the table necessary to expand contractions
+│   ├─── load_models_data.py : functions to automatically download all packages from nltk and spacy
 │   ├─── prep_pipeline.py : pipeline to process the quotes and create dataframe that contains all the needed features for analysis
 │   ├─── prep_utilities.py : functions to do NLP tasks and engineer features for the dataset 
 │   ├─── sampling_data.py : functions to generate a 1/20 sample of all the quotes
@@ -79,5 +81,5 @@ In order to conduct this analysis and use this methods, several assumptions had 
 │   └─── thematic_processing.py : functions used for the clustering of quotes by topics
 ├─── Initial_Analysis.ipynb
 ├─── README.md : [ERROR] Infinite Recursion :)
-└─── requirements.txt
+└─── requirements.txt : file showing the packages, and version, used
 </pre>

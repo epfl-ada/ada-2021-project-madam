@@ -9,24 +9,19 @@
 #finding speakers' gender
 
 
-####double check unnecessary imports###
-
-import numpy as npgit 
-import nltk, gensim, spacy#, contractions, string
+import gensim, spacy
 import re
-
 from nltk.corpus import stopwords, words
 from urllib.parse import urlparse
-
 from src.contractions import CONTRACTION_MAP
 
-# Initialize spacy 'en' model, keeping only tagger component (for efficiency)
+# Initialize spacy 'en_core_web_sm' model, keeping only tagger component (for efficiency)
 nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
 
 #Save real words in to wordlist
 wordlist = set(words.words())
 
-# save stopwords
+# save stopwords in to stop_words
 stop_words = set(stopwords.words('english'))
 
 def get_yyyy_mm(date):
@@ -40,12 +35,25 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """
     This function lemmatizes a given sentence, and return the sentence already lemmatized.
     For detailed information on spacy see https://spacy.io/api/annotation
+    
+    Parameters
+    ----------
+    texts : list
+        (Already tokenized) words to lemmatize.
+    allowed_postags : list
+        Types of words we wish to allow to pass to the processed output.
+        
+    Returns
+    -------
+    texts_out : list
+        List with lemmatized input.
     """
     # turn the text into something spacy can process. Namely, this saves
     # Text, Lemma, POS, Tag, Dep, Shape, alpha, stop
     # for all the words
     doc = nlp(" ".join(texts))
-    texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
+    # now we only save the lemmas of the words with allowed postags
+    texts_out = [str(token.lemma_).lower() if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
 def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
@@ -55,6 +63,7 @@ def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
     https://towardsdatascience.com/a-practitioners-guide-to-natural-language-processing-part-i-processing-understanding-text-9f4abfd13e72
     """
     
+    # regex to spot contractions
     contractions_pattern = re.compile('({})'.format('|'.join(contraction_mapping.keys())), 
                                       flags=re.IGNORECASE|re.DOTALL)
     def expand_match(contraction):
@@ -72,22 +81,28 @@ def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
 
 def prep_tokens_row(doc, fix_contract=True, del_stop=True, lemmatize=True):
     """
-    This function takes a doc (list of strings), and prepares it for analysis.
+    This function takes a doc, and prepares it for analysis.
     Preparation includes:
         - Contractions expansion
         - Tokenization of sentences
         - Removal of stopwords
         - Lemmatization of words
+    
     Parameters
     ----------
-    doc : list
+    doc : str
         Document to prepare.
+    fix_contract : bool
+        If true, expand contractions (don't -> do not; I've -> I have,...).
+    del_stop : bool
+        If true, remove stopwords.
+    lemmatize : bool
+        If true, lemmatize words.
     Returns
     -------
     clean_doc : list
         Document prepared for analysis.
     """
-
     # iterate through all the docs to process them
     if fix_contract:
       # expand contractions
@@ -107,7 +122,20 @@ def prep_tokens_row(doc, fix_contract=True, del_stop=True, lemmatize=True):
 
 # Test filter
 def count_true_words(tokens):
-  """ Counts the number of true words in a list of tokens. """
+  """
+  Counts the number of true words in a list of tokens.
+  
+  Parameters
+    ----------
+    tokens : list
+        List of tokens to measure the number of true words.
+    
+    Returns
+    -------
+    true_words : int
+        Number of true words in input of tokens.
+
+    """
   true_words = [1 if token in wordlist else 0 for token in tokens]
   return sum(true_words)
 
@@ -121,11 +149,14 @@ def filter_quotes(doc, min_size = 1, min_true_size=1):
     ----------
     doc : Dataframe
         Quotes dataframe
-
+    min_size : int
+        Minimum number of words in quote
+    min_true_size : int
+        Minimum number of real words in quote
 
     Returns
     -------
-    doc_new : Dataframe
+    doc_new : pandas.DataFrame
         Filtered version of original doc.
     """
 
@@ -133,9 +164,9 @@ def filter_quotes(doc, min_size = 1, min_true_size=1):
     doc_new=doc[doc['tokens'].apply(lambda x: len(x)) >= min_size].reset_index(drop=True)
 
     #delete rows which have less than min_true_size real words and reset index
-    doc_new = doc_new[doc_new['tokens'].apply(lambda x: count_true_words(x)) >= min_true_size]
+    doc_new = doc_new[doc_new['tokens'].apply(lambda x: count_true_words(x)) >= min_true_size].reset_index(drop=True)
 
-    return doc_new.reset_index(drop=True)
+    return doc_new
 
 def get_website(doc):
     """
@@ -163,8 +194,20 @@ def get_website(doc):
 
 def find_qids(speaker, doc_speaker_attributes):
     """
-    This function finds qids for missing rows
-    Since we replaced None speakers those rows have [] as qids
+    This function finds qids for missing rows.
+    Since we replaced None speakers those rows have [] as qids.
+    
+    Parameters
+    ----------
+    speaker : str
+        Speaker whom we wish to find the qids
+    doc_speaker_attributes : pandas.DataFrame
+        WHAT IS THIS ?? SOMEBODY FILL THIS IS IN PLZ
+
+    Returns
+    -------
+    qid_list : list
+        List of qids for this speaker
     """
     qid_list=[]
     for ind, lines in doc_speaker_attributes['aliases'].items():
@@ -176,15 +219,27 @@ def find_gender(qids, doc_speaker_attributes):
     """
     This function finds the gender of the speaker according to speaker_attributes
     If there's multiple qids with different genders, returns None
+    
+    Parameters
+    ----------
+    qids : list
+        List of qids to use to find the gender
+    doc_speaker_attributes : pandas.DataFrame
+        WHAT IS THIS ?? SOMEBODY FILL THIS IS IN PLZ
+
+    Returns
+    -------
+    gender : str
+        Gender of the speaker determined from the qids.
     """
     if len(qids)==0:
         return None
 
     else:
     # Check every qid, if some has gender != None, then we choose that one
-        for i in range(len(qids)):
+        for qid in qids:
             try:
-                gender = doc_speaker_attributes.loc[qids[i]]['gender_label']
+                gender = doc_speaker_attributes.loc[qid]['gender_label']
             except:
                 gender = None
 

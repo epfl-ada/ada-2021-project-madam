@@ -2,14 +2,38 @@
 #This file includes pipeline to prepare the document for analysis
 #functions used here can be found in prep_utilities.py file
 
-#Pipeline for data prep
-
 from src.prep_utilities import *
 
 #Pipeline for data prep
-#Pipeline for data prep
 def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True):
-
+    """
+    This function performs the full pipeline to prepare the data taken from Quotebank
+    
+    Parameters
+    ----------
+    doc : pandas.DataFrame
+        Dataframe with the data to pre-process.
+    speaker_attributes : pandas.DataFrame
+        WHAT IS IN HERE ?? SOMEBODY FILL THIS IN PLEASE.
+    fix_contract : bool
+        If true, expand contractions (don't -> do not; I'm -> I am;...)
+    del_stop : bool
+        If true, remove all stopwords.
+    lemmatize : bool
+        If true, lemmatize all words.
+    
+    Returns
+    -------
+    copy_doc : pandas.DataFrame
+        Result of the data provided after having passed through the whole pipeline.
+    """
+    
+    # COMMENT ----
+    #
+    # Are there any more columns that we can drop during all of this?
+    #
+    # ------------
+    
     # Delete rows with 'None' speaker
     print("Deleting rows with 'None' speaker...")
     copy_doc = doc[doc['speaker'] != 'None']

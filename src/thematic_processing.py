@@ -25,60 +25,7 @@ import pyLDAvis
 import pyLDAvis.sklearn
 import matplotlib.pyplot as plt
 
-# packages for data pre-processing
-import gensim, spacy
-from nltk.corpus import stopwords
-
-# Initialize spacy 'en' model, keeping only tagger component (for efficiency)
-nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
-
-def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
-    """
-    This function lemmatizes a given sentence, and return the sentence already lemmatized. For detailed information on spacy see https://spacy.io/api/annotation
-    """
-    # turn the text into something spacy can process. Namely, this saves
-    # Text, Lemma, POS, Tag, Dep, Shape, alpha, stop
-    # for all the words
-    doc = nlp(" ".join(texts))
-    # Now we lemmatize all the words
-    texts_out = ' '.join([token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags])
-    return texts_out
-
-def prepare_docs(docs, del_stop = True, lemmatize = True):
-    """
-    This function takes a list of docs, and prepares them for LDA grouping.
-    Preparation includes:
-        - Contractions expansion
-        - Tokenization of sentences
-        - Removal of stopwords
-        - Lemmatization of words (NEEDS IMPROVEMENT)
-
-    Parameters
-    ----------
-    docs : list
-        List of docs to prepare.
-
-    Returns
-    -------
-    clean_docs : list
-        List of docs already prepared for LDA.
-    """
-    clean_docs = []
-    
-    stop_words = set(stopwords.words('english'))
-
-    for doc in docs:
-        # tokenize doc and remove punctuation
-        token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
-        if del_stop:
-            # remove stopwords
-            token_doc = [word for word in token_doc if not word in stop_words]
-        if lemmatize:
-            # Do lemmatization keeping only Noun, Adj, Verb, Adverb
-            token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
-        clean_docs.append(token_doc)
-
-    return clean_docs
+from prep_utilities import prep_tokens
 
 def topic_cluster(docs, num_topics = 10, print_res = False):
     vectorizer = CountVectorizer(analyzer='word',
@@ -240,7 +187,7 @@ def get_top_words_per_topic(lda_model, vectorizer, n_words = 15):
 
 def make_prediction(new_docs, lda_model, vectorizer, df_topic_keywords):
 
-    clean_docs = prepare_docs(new_docs, del_stop = False)
+    clean_docs = prep_tokens(new_docs, del_stop = False)
 
     clean_docs = vectorizer.transform(clean_docs)
     topics_probs = lda_model.transform(clean_docs)

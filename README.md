@@ -9,7 +9,7 @@
 On this project we set ourselves out to analyze whether there is any fundamental difference in the way quotes from men vs women and handled by various news sources. To study this we propose the following research questions.
 
 - What is the representativity of quotes by men vs women, and how has it evolved over time?
-- Which are the main themes in the quotes from men and from women?
+- Which are the main topics in the quotes from men and from women?
 - What is the sentiment (negative, neutral, positive) associated to the quotes by gender, potentially distributed by themes? *
 - What is the overall level of education from the quoted individuals, by gender and by theme?
 

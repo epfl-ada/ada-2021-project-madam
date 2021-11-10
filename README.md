@@ -22,13 +22,14 @@ Then, we want to study a couple of very influencial websites [WE STILL HAVE TO D
 ### Proposed additional datasets
 
 From the current outlook of the project, there is no prospect of any additional datasets.
+[We did use extra information from Wikidata to get the labels for speaker attributes]
 
 ---
 
 ### Methods
 
 Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline until it was in a state where it could be processed.
-- **Data Sampling :** As the orginal dataset is enormous, the data was sampled to be utilized during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
+- **Data Sampling :** As the orginal dataset is pretty sizeable, the data was sampled to be utilized during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
 - **Structural Changes :** ;
 - **Content Changes :** The quotes were manipulated into a form easier to analyze. For that, the sentences were tokenized, the stopwords were removed and the words were lemmatized. These allowed to reduce the variance of words, creating a more meaningful bag of words (BoG).
 
@@ -41,7 +42,7 @@ To study the different aspects mentioned in the research questions, several meth
 
 In order to conduct this analysis and use this methods, several assumptions had to be made. STILL NEED TO WRITE THIS MORE CAREFULLY
 
-- **Topic generalization :** Since unsupervised learning is computationally expensive, it is not necessary to train the LDA the model with the whole dataset to get the classification of the topics. We assumed that, with a large enough sample, we can classify the topics presented with hig accuracy. The topics of the remaining quotes can be classified using the model generated from this sampled training set.
+- **Topic generalization :** Since unsupervised learning is computationally expensive, it is not necessary to train the LDA the model with the whole dataset to get the classification of the topics. We assumed that, with a large enough sample, we can classify the topics presented with high accuracy. The topics of the remaining quotes can be classified using the model generated from this sampled training set.
 - **Relationship between complexity and education level :** The base assumption used to establish this connection is that people who write more 'difficult' text will, tendentially, have a higher level of education. In fact the Dale-Chall Readability Formula can be converted directly into an indication of the school-level required to understand the text, which we assume can be correlated with the education level required to generate the text.
 
 **_Note :_** These methods required the usage of external packages. For a more detailed exposition of the packages used, please see [requirements.txt](https://github.com/epfl-ada/ada-2021-project-madam/blob/main/requirements.txt).
@@ -71,8 +72,8 @@ In order to conduct this analysis and use this methods, several assumptions had 
 ### Repo Architecture
 <pre>
 ├─── src
-│   ├─── prep_pipeline.py : pipeline to precessed the quotes to create dataframe that contains all the needed features for analysis
-│   ├─── prep_utilities.py : helper functions used to do NLP tasks and enfineer features for the dataset 
+│   ├─── prep_pipeline.py : pipeline to process the quotes and create dataframe that contains all the needed features for analysis
+│   ├─── prep_utilities.py : functions to do NLP tasks and engineer features for the dataset 
 │   ├─── sampling_data.py : functions to generate a 1/20 sample of all the quotes
 │   ├─── text_scores.py : functions used to measure the complexity of the quotes
 │   └─── thematic_processing.py : functions used for the clustering of quotes by topics

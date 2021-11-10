@@ -81,7 +81,12 @@ def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
     return clean_docs
 
 # Test filter
-def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
+def count_true_words(tokens):
+  """ Counts the number of true words in a list of tokens. """
+  true_words = [1 if token in wordlist else 0 for token in tokens]
+  return sum(true_words)
+
+def filter_quotes(doc, min_size = 1, min_true_size=1):
     """
     This function receives a document and deletes rows which have
         - less than min_size words in the selected column
@@ -101,30 +106,13 @@ def filter_quotes(doc, min_size = 1, min_true_size=1, none_prob_threshold=0.9):
     """
 
     #delete rows which have less than min_size words and reset index
-    doc_new=doc[doc['tokens'].map(len)>min_size].reset_index(drop=True)
+    doc_new=doc[doc['tokens'].apply(lambda x: len(x)) >= min_size].reset_index(drop=True)
 
     #delete rows which have less than min_true_size real words and reset index
-    true_word_count=[]
-    for tokens in doc_new['tokens']:
-        # true_word=[]
-        # for w in words:
-        #     true_word.append(w in wordlist)
-        # true_word_count.append(sum(true_word))
-        true_word_count.append(sum(np.in1d(tokens, wordlist)))
-    doc_new['true']=true_word_count
-    doc_new=doc_new[doc_new['true']>min_true_size].drop(columns='true').reset_index(drop=True)
+    doc_new = doc_new[doc_new['tokens'].apply(lambda x: count_true_words(x)) >= min_true_size]
 
-    #delete rows which have more than none_prob_threshold probability assigned to speaker as 'None'
-    """ind_list=[]
-    for ind, i in enumerate(doc_new['probas']):
-        for j in range(len(i)):
-            if i[j][0]=='None':
-                if float(i[j][1])>none_prob_threshold:
-                    ind_list.append(ind)
-    doc_new.drop(doc_new.index[ind_list], axis=0, inplace=True)"""
-    none_rows = doc_new[(doc_new['speaker'] == 'None') & (doc_new['probas'].apply(lambda x: float(x[0][1])) > none_prob_threshold)]
-
-    doc_new = doc_new.drop(none_rows.index, axis=0)
+    #delete rows which have 'None' speaker
+    doc_new = doc_new[doc_new['speaker'] != 'None']
 
     return doc_new.reset_index(drop=True)
 

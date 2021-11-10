@@ -92,8 +92,10 @@ def prep_tokens_row(doc, fix_contract=True, del_stop=True, lemmatize=True):
     if fix_contract:
       # expand contractions
       doc = expand_contractions(doc)
-      # tokenize doc and remove punctuation
-      token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
+        
+    # tokenize doc and remove punctuation
+    token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
+    
     if del_stop:
       # remove stopwords
       token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]

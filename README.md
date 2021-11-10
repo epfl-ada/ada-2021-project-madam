@@ -77,6 +77,6 @@ In order to conduct this analysis and use this methods, several assumptions had 
 │   ├─── text_scores.py : functions used to measure the complexity of the quotes
 │   └─── thematic_processing.py : functions used for the clustering of quotes by topics
 ├─── Initial_Analysis.ipynb
-├─── README.md : <ERROR> Infinite Recursion :)
+├─── README.md : [ERROR] Infinite Recursion :)
 └─── requirements.txt
 </pre>

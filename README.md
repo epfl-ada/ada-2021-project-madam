@@ -2,8 +2,6 @@
 
 ### ABSTRACT
 
--- Fill in abstract here --
-
 ---
 
 ### Research Questions
@@ -30,19 +28,19 @@ From the current outlook of the project, there is no prospect of any additional 
 ### Methods
 
 Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline until it was in a state where it could be processed.
+- **Data Sampling :** ;
 - **Structural Changes :** ;
-- **Content Changes :** The quotes themselves were manipulated into a form easier to analyze. For that, the contractions were expanded (don't -> do not, yall -> you all), the sentences were tokenized, the stopwords were removed and the words were lemmatized. This latter manipulation allowed to reduce the variance of words, creating a more representative bag of words (BoG).
+- **Content Changes :** The quotes were manipulated into a form easier to analyze. For that, the sentences were tokenized, the stopwords were removed and the words were lemmatized. These allowed to reduce the variance of words, creating a more meaningful bag of words (BoG).
 
 To study the different aspects mentioned in the research questions, several methods were used.
 
 - **Characteristics Identification :** Data extracted from Quotebank or Wikidata (via QIds);
 - **Theme Identification :** To identify the main topics in a set of quotes, we used 'Latent Dirichlet Allocation' (or [LDA](https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation)). This model clusters the BoG provided into a set of *n* topics (where *n* is a hyperparameter). Then, it provides the main words associated to each topic and, by human interpretation, it is possible to label them. This model, after being trained, can be used to identify the main topics from any given quote;
-- **Text Sentiment :** TBD;
+- **Text Sentiment :** The sentiment analysis was done via a polarity score, which ranges from -1 (negative) to 1 (positive). ;
 - **Text Readability / Complexity :** Using the [Dale-Chall Readability Formula](https://en.wikipedia.org/wiki/Dale%E2%80%93Chall_readability_formula) we can measure the 'difficulty' of any given text (the base assumption is that people who write more 'difficult' text will, tendentially, have a higher level of education).
 
 In order to conduct this analysis and use this methods, several assumptions had to be made. STILL NEED TO WRITE THIS MORE CAREFULLY
 
-- **Homogeneity of data between chuncks :** (regarding the removal of rows);
 - **Theme repetition :** It is not necessary to train the LDA the model with all the quotes to get all of the topics. Using a large enough sample we can capture all of the topics present, and in the remaining quotes there will only be repetitions (or slight variations) of these topics.
 - **Relationship between complexity and education level :** The base assumption used to establish this connection is that people who write more 'difficult' text will, tendentially, have a higher level of education. In fact the Dale-Chall Readability Formula can be converted directly into an indication of the school-level required to understand the text, which we assume can be correlated with the education level required to generate the text.
 
@@ -76,8 +74,9 @@ In order to conduct this analysis and use this methods, several assumptions had 
 │   ├─── prep_pipeline.py
 │   ├─── prep_utilities.py
 │   ├─── sampling_data.py
-│   ├─── text_scores.py
-│   └─── thematic_processing.py
+│   ├─── text_scores.py : functions used to measure the complexity of the quotes
+│   └─── thematic_processing.py : functions used for the clustering of quotes by topics
 ├─── Initial_Analysis.ipynb
+├─── README.md : <ERROR> Infinite Recursion :)
 └─── requirements.txt
 </pre>

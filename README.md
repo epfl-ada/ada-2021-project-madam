@@ -6,14 +6,14 @@
 
 ### Research Questions
 
-On this project we set ourselves out to analyze whether there is any fundamental difference in the way quotes from men vs women and handled by various news sources. To study this we propose the following research questions.
+On this project we set ourselves out to analyze whether there is any fundamental difference in the way quotes from men vs women and handled by various news sources. For all the available quotes, we want to study:
 
-- What is the representativity of quotes by men vs women, and how has it evolved over time?
-- Which are the main themes in the quotes from men and from women?
+- What is the representativity of quotes by gender, and how has it evolved over time?
+- Which are the main topics in the quotes from different genders?
 - What is the sentiment (negative, neutral, positive) associated to the quotes by gender, potentially distributed by themes? *
-- What is the overall level of education from the quoted individuals, by gender and by theme?
+- What is the complexity of the speech from the quoted individuals, by gender and by theme?
 
-Afterwards, we restrict our analysis to the main generators of quotes (i.e. the sites with the highest number of quotes counts), as these will tend to be the most influential, and we conduct a similar analysis within this subset.
+Then, we want to study a couple of very influencial websites [WE STILL HAVE TO DECIDE WHICH], and compare the sentiment and portion of the quotes by gender, to decide which ones have a more gender equal roster of quotes.
 
 \*While quotes are inherently unchangeable, the context in which they are used and the predominance of their sentiment can reveal information about the sources predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias which would reflect a different image for each gender.
 

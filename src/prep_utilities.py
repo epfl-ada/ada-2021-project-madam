@@ -32,6 +32,9 @@ nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
 #Save real words in to wordlist
 wordlist = set(words.words())
 
+# save stopwords
+stop_words = set(stopwords.words('english'))
+
 def get_yyyy_mm(date):
     """
     For a given date format this function returns YYYY-MM format
@@ -40,7 +43,13 @@ def get_yyyy_mm(date):
     return yyyy_mm
 
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
-    """https://spacy.io/api/annotation"""
+    """
+    This function lemmatizes a given sentence, and return the sentence already lemmatized.
+    For detailed information on spacy see https://spacy.io/api/annotation
+    """
+    # turn the text into something spacy can process. Namely, this saves
+    # Text, Lemma, POS, Tag, Dep, Shape, alpha, stop
+    # for all the words
     doc = nlp(" ".join(texts))
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
@@ -76,7 +85,7 @@ def prep_tokens_row(doc, fix_contract = True, del_stop = True, lemmatize = True)
       # Do lemmatization keeping only Noun, Adj, Verb, Adverb
       token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
 
-    return doc
+    return token_doc
 
 # Test filter
 def count_true_words(tokens):

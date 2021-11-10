@@ -57,8 +57,8 @@ In order to conduct this analysis and use this methods, several assumptions had 
 
 - Data Extraction : André, Khanh, Medya
 - Pre-processing pipeline : Medya, Tomás
-- Study of best methods : Khanh, Tomás
-- Implementation of best methods : Medya, Tomás
+- Study of adequate NLP methods : Khanh, Tomás
+- Implementation of NLP methods : Medya, Tomás
 - Runtime Optimization : André, Tomás
 - Results Interpretation : 
 - Website Construction (for the 'Data Story') : 

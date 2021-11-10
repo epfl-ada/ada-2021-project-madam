@@ -15,7 +15,7 @@ import numpy as np
 #import pandas as pd
 import nltk, gensim, spacy, contractions#, string
 
-nltk.download(['words', 'averaged_perceptron_tagger', 'stopwords'])
+# nltk.download(['words', 'averaged_perceptron_tagger', 'stopwords'])
 
 from nltk.corpus import stopwords, words
 #from nltk.stem import WordNetLemmatizer
@@ -24,7 +24,7 @@ from urllib.parse import urlparse
 
 # nltk.download(['words', 'averaged_perceptron_tagger'])
 # nltk.download('stopwords')
-spacy.cli.download("en_core_web_sm")
+# spacy.cli.download("en_core_web_sm")
 
 # Initialize spacy 'en' model, keeping only tagger component (for efficiency)
 nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])

@@ -14,17 +14,12 @@
 import numpy as np
 #import pandas as pd
 import nltk, gensim, spacy, contractions#, string
-
-# nltk.download(['words', 'averaged_perceptron_tagger', 'stopwords'])
+import re
 
 from nltk.corpus import stopwords, words
-#from nltk.stem import WordNetLemmatizer
-#from nltk import pos_tag, word_tokenize
 from urllib.parse import urlparse
 
-# nltk.download(['words', 'averaged_perceptron_tagger'])
-# nltk.download('stopwords')
-# spacy.cli.download("en_core_web_sm")
+from src.contractions import CONTRACTION_MAP
 
 # Initialize spacy 'en' model, keeping only tagger component (for efficiency)
 nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
@@ -54,7 +49,29 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
-def prep_tokens_row(doc, fix_contract = True, del_stop = True, lemmatize = True):
+def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
+    """
+    This function expands all the contractions within a text, for e.g. I've -> I have.
+    This code was taken from this source: 
+    https://towardsdatascience.com/a-practitioners-guide-to-natural-language-processing-part-i-processing-understanding-text-9f4abfd13e72
+    """
+    
+    contractions_pattern = re.compile('({})'.format('|'.join(contraction_mapping.keys())), 
+                                      flags=re.IGNORECASE|re.DOTALL)
+    def expand_match(contraction):
+        match = contraction.group(0)
+        first_char = match[0]
+        expanded_contraction = contraction_mapping.get(match)\
+                                if contraction_mapping.get(match)\
+                                else contraction_mapping.get(match.lower())                       
+        expanded_contraction = first_char+expanded_contraction[1:]
+        return expanded_contraction
+        
+    expanded_text = contractions_pattern.sub(expand_match, text)
+    expanded_text = re.sub("'", "", expanded_text)
+    return expanded_text
+
+def prep_tokens_row(doc, fix_contract=True, del_stop=True, lemmatize=True):
     """
     This function takes a doc (list of strings), and prepares it for analysis.
     Preparation includes:
@@ -75,7 +92,7 @@ def prep_tokens_row(doc, fix_contract = True, del_stop = True, lemmatize = True)
     # iterate through all the docs to process them
     if fix_contract:
       # expand contractions
-      doc = contractions.fix(doc)
+      doc = expand_contractions(doc)
       # tokenize doc and remove punctuation
       token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
     if del_stop:

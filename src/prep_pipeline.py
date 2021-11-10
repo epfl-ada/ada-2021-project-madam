@@ -10,42 +10,35 @@ from src.prep_utilities import *
 
 #Pipeline for data prep
 #Pipeline for data prep
-def prep_docs(doc, doc2, fix_contract = True, lemmatize = True):
-    print("Copying...")
-    copy_doc=doc.copy()
+def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True):
 
-    #get date in YYYY-MM format
+    # Delete rows with 'None' speaker
+    print("Deleting rows with 'None' speaker...")
+    copy_doc = doc[doc['speaker'] != 'None']
+
+    # get date in YYYY-MM format
     print("Simplifying date column...")
-    copy_doc['date']= copy_doc['date'].apply(lambda x: get_yyyy_mm(x))
+    copy_doc['date'] = copy_doc['date'].apply(lambda x: get_yyyy_mm(x))
 
-    #prepare clean tokens
+    # prepare clean tokens
     print("Tokenizing quotes...")
-    copy_doc['tokens']=prep_tokens(doc['quotation'], fix_contract, lemmatize)
+    copy_doc['tokens'] = copy_doc['quotation'].apply(
+        lambda x: prep_tokens_row(x, fix_contract, del_stop, lemmatize))
 
-    #filter out unnecessary rows
+    # filter out unnecessary rows (by number of words/true words)
     print("Filtering rows...")
-    copy_doc=filter_quotes(copy_doc)
+    copy_doc = filter_quotes(copy_doc)
 
-    #get domain names
+    # get domain names
     print("Getting url domains...")
-    copy_doc['websites']=copy_doc['urls'].apply(lambda x: get_website(x))
+    copy_doc['websites'] = copy_doc['urls'].apply(lambda x: get_website(x))
     copy_doc.drop(columns='urls', inplace=True)
 
-    #replace None speakers
-    copy_doc=replace_none_speaker(copy_doc)
-
-    #get qid for replaced speakers
-    print("Getting QIDs for replaced speakers...")
-    missing_qids=copy_doc[copy_doc['qids'].apply(lambda x: x==[])]
-    copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
-    missing_qids['qids']=missing_qids['speaker'].apply(lambda x: find_qids(x, doc2))
-    copy_doc=copy_doc.append(missing_qids, ignore_index=True)
-
-    #If the qid is still missing we drop that row
-    copy_doc=copy_doc[copy_doc['qids'].apply(lambda x: x!=[])]
-
-    #get the gender of the speaker
+    # get the gender of the speaker
     print("Getting genders...")
-    copy_doc['gender']=copy_doc['qids'].apply(lambda x: find_gender(x,doc2))
+    copy_doc['gender'] = copy_doc['qids'].apply(lambda x: find_gender(x, speaker_attributes))
+
+    # Drop rows with gender = 'None'
+    copy_doc = copy_doc[copy_doc['gender'].apply(lambda x: type(x)) != type(None)]
 
     return copy_doc

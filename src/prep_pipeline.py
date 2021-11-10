@@ -4,8 +4,6 @@
 
 #Pipeline for data prep
 
-#import numpy as np
-#import pandas as pd
 from src.prep_utilities import *
 
 #Pipeline for data prep

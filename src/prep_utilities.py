@@ -11,9 +11,8 @@
 
 ####double check unnecessary imports###
 
-import numpy as np
-#import pandas as pd
-import nltk, gensim, spacy, contractions#, string
+import numpy as npgit 
+import nltk, gensim, spacy#, contractions, string
 import re
 
 from nltk.corpus import stopwords, words

@@ -22,13 +22,14 @@ Then, we want to study a couple of very influencial websites [WE STILL HAVE TO D
 ### Proposed additional datasets
 
 From the current outlook of the project, there is no prospect of any additional datasets.
+[We did use extra information from Wikidata to get the labels for speaker attributes]
 
 ---
 
 ### Methods
 
 Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline until it was in a state where it could be processed.
-- **Data Sampling :** As the orginal dataset is enormous, the data was sampled to be utilized during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
+- **Data Sampling :** As the orginal dataset is pretty sizeable, the data was sampled to be utilized during data explorations. This sample is necessary to capture any correlations of the quotes throughout the years;
 - **Structural Changes :** ;
 - **Content Changes :** The quotes were manipulated into a form easier to analyze. For that, the sentences were tokenized, the stopwords were removed and the words were lemmatized. These allowed to reduce the variance of words, creating a more meaningful bag of words (BoG).
 

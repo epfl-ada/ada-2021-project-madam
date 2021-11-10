@@ -76,7 +76,7 @@ def prep_tokens_row(doc, fix_contract = True, del_stop = True, lemmatize = True)
       # Do lemmatization keeping only Noun, Adj, Verb, Adverb
       token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
 
-    return doc
+    return token_doc
 
 # Test filter
 def count_true_words(tokens):

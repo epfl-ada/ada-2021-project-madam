@@ -20,10 +20,10 @@ def write_stream(out_file, quote_files):
 if __name__ == '__main__':
 
     # quotebanks folder
-    path_to_files = '/content/drive/MyDrive/Phase2/Quotebank/'
+    path_to_files = '../data/Quotebank/'
 
     # output file path
-    path_to_out = '/content/drive/MyDrive/Phase2/quotes-sample.json.bz2'
+    path_to_out = '../data/quotes-sample.json.bz2'
 
     # list of paths to all the quotebank datasets
     quote_files = [path_to_files + f for f in listdir(path_to_files) if isfile(join(path_to_files, f))]

@@ -45,9 +45,9 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     texts_out = [token.lemma_ if token.lemma_ not in ['-PRON-'] else '' for token in doc if token.pos_ in allowed_postags]
     return texts_out
 
-def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
+def prep_tokens_row(doc, fix_contract = True, del_stop = True, lemmatize = True):
     """
-    This function takes a list of docs, and prepares them for analysis.
+    This function takes a doc (list of strings), and prepares it for analysis.
     Preparation includes:
         - Contractions expansion
         - Tokenization of sentences
@@ -55,30 +55,28 @@ def prep_tokens(docs, fix_contract = True, del_stop = True, lemmatize = True):
         - Lemmatization of words
     Parameters
     ----------
-    docs : list
-        List of docs to prepare.
+    doc : list
+        Document to prepare.
     Returns
     -------
-    clean_docs : list
-        List of docs already prepared for analysis.
+    clean_doc : list
+        Document prepared for analysis.
     """
-    clean_docs = []
 
     # iterate through all the docs to process them
-    for doc in docs:
-        if fix_contract:
-            # expand contractions
-            doc = contractions.fix(doc)
-            # tokenize doc and remove punctuation
-            token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
-        if del_stop:
-            # remove stopwords
-            token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]
-        if lemmatize:
-            # Do lemmatization keeping only Noun, Adj, Verb, Adverb
-            token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
-        clean_docs.append(token_doc)
-    return clean_docs
+    if fix_contract:
+      # expand contractions
+      doc = contractions.fix(doc)
+      # tokenize doc and remove punctuation
+      token_doc = gensim.utils.simple_preprocess(str(doc), deacc=True) # deacc=True removes punctuations
+    if del_stop:
+      # remove stopwords
+      token_doc = [word for word in token_doc if not word in set(stopwords.words('english'))]
+    if lemmatize:
+      # Do lemmatization keeping only Noun, Adj, Verb, Adverb
+      token_doc = lemmatization(token_doc, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
+
+    return doc
 
 # Test filter
 def count_true_words(tokens):
@@ -91,7 +89,6 @@ def filter_quotes(doc, min_size = 1, min_true_size=1):
     This function receives a document and deletes rows which have
         - less than min_size words in the selected column
         - less than min_true_size real words in the selected columns
-        - more than none_prob_threshold probability assigned to speaker as 'None'
 
     Parameters
     ----------
@@ -111,9 +108,6 @@ def filter_quotes(doc, min_size = 1, min_true_size=1):
     #delete rows which have less than min_true_size real words and reset index
     doc_new = doc_new[doc_new['tokens'].apply(lambda x: count_true_words(x)) >= min_true_size]
 
-    #delete rows which have 'None' speaker
-    doc_new = doc_new[doc_new['speaker'] != 'None']
-
     return doc_new.reset_index(drop=True)
 
 def get_website(doc):
@@ -131,14 +125,14 @@ def get_website(doc):
             web_list.append(core[0])
     return web_list
 
-def replace_none_speaker(doc):
-    """
+"""def replace_none_speaker(doc):
+ 
     This function replaces speakers originally assigned 'None' with the speaker that have second highest probability
-    """
+
     doc_copy=doc.copy()
 
     doc_copy['speaker'][doc_copy['speaker'] == 'None'] = doc_copy['probas'][doc_copy['speaker'] == 'None'].apply(lambda x: x[1][0])
-    return doc_copy
+    return doc_copy"""
 
 def find_qids(speaker, doc_speaker_attributes):
     """

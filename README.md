@@ -15,7 +15,7 @@ On this project we set ourselves out to analyze whether there is any fundamental
 
 Then, we want to study a couple of very influencial websites (which ones is still TBD), and compare the sentiment and portion of the quotes by gender, to decide which ones have a more gender equal roster of quotes.
 
-\*While quotes are inherently unchangeable, the context in which they are used and the predominance of their sentiment can reveal information about the sources predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias which would reflect a different image for each gender.
+\*While quotes are inherently unchangeable, the context in which they are used and the predominance of their sentiment can reveal information about the sources' predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias which would reflect a different image for each gender.
 
 ---
 

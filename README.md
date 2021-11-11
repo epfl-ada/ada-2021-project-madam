@@ -30,7 +30,10 @@ From the current outlook of the project, there is no prospect of any additional 
 
 Before any study could be conducted, there had to be a data pre-processing, which sent the raw data through a pipeline to clean it and make analyzable.
 - **Data Sampling :** As the original dataset is very large, the data was randomly sampled (around 5%) from the 2015-2020 quotes to be used during data explorations. This sampling is necessary to capture any correlations of the quotes throughout the years;
-- **Structural Changes :** (TALK ABOUT REMOVAL OF ROWS, REPLACEMENT OF GENDERS,...);
+- **Structural Changes :** In this analysis, we removed quotes:
+  - With 'None' speaker;
+  - Whose number of "true words" were below a certain threshold.
+  - Whose speaker gender is 'None'. 
 - **Content Changes :** The quotes were manipulated into a form easier to analyze. For that, the sentences were tokenized, the stopwords were removed and the words were lemmatized. These allowed to reduce the variance of words, creating a more meaningful bag of words (BoG).
 
 To study the different aspects mentioned in the research questions, several methods were used.

@@ -56,7 +56,7 @@ In order to conduct this analysis and use these methods, several assumptions wer
 ### Internal Organization
 
 - Data Extraction : André, Khanh, Medya
-- Pre-processing pipeline : Medya, Tomás
+- Pre-processing pipeline : Medya, Tomás, André
 - Study of adequate NLP methods : Khanh, Tomás
 - Implementation of NLP methods : Medya, Tomás
 - Runtime Optimization : André, Tomás

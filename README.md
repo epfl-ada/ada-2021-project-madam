@@ -2,8 +2,8 @@
 
 ### ABSTRACT
 
-Gender equality is a long-fought battle, and one that has already taken long strides. With this projects we set ourselves out to analyze whether there is still a fundamental difference in the way quotes from men vs women are handled by various news sources. More than simply looking at the representativity of genders, we want to study the content of the quotes. Is there a difference in the topics men or women are cited on? What is the overal sentiment (positive or negative) associated with the quotes? What kind of language is cited (simpler or more complex)?
-News sources have the power to influence society on a large. So biases can be easily propagated, via the choice of quotes, by their content or sentiment, it is entirely possible to reflect an image (potentially distorted) of a group of people. Is that happening? That's what we want to discover.
+Gender equality is a long-fought battle, and one that has already taken long strides. With this project we set ourselves out to analyze whether there is still a fundamental difference in the way quotes from men vs women are handled by various news sources. More than simply looking at the representativity of genders, we want to study the content of the quotes. Is there a difference in the topics men or women are cited on? What is the overall sentiment (positive or negative) associated with the quotes? What kind of language is cited (simpler or more complex)?
+News sources have the power to influence society on a large scale. Biases can be easily propagated, via the choice of quotes, by their content or sentiment, it is entirely possible to reflect an image (potentially distorted) of a group of people. Is that happening? That's what we want to discover.
 
 ### Research Questions
 
@@ -14,9 +14,9 @@ With this project we hope to answer the following questions.
 - What is the sentiment (negative, neutral, positive) associated to the quotes by gender, potentially distributed by themes? *
 - What is the complexity of the speech from the quoted individuals, by gender and by theme?
 
-Then, we want to study a couple of very influencial websites (which ones is still TBD), and compare the sentiment and portion of the quotes by gender, to decide which ones have a more equalitarian roster of quotes.
+Then, we want to study a couple of very influential websites (which ones is still TBD), and compare the sentiment and portion of the quotes by gender, to decide which ones have a more equalitarian roster of quotes.
 
-\*While quotes are inherently unchangeable, the context in which they are used and the predominance of their sentiment can reveal information about the sources' predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias.
+\*While quotes are inherently unchangeable, the context in which they are used, and the predominance of their sentiment, can reveal information about the sources' predisposition towards the quoted. For example, if a newspaper tendentially selects quotes with a negative sentiment for women, while mainly neutral/positive for men, this could be a display of an internal bias.
 
 ---
 

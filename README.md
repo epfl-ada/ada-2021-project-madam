@@ -2,11 +2,12 @@
 
 ### ABSTRACT
 
----
+Gender equality is a long-fought battle, and one that has already taken long strides. With this projects we set ourselves out to analyze whether there is still a fundamental difference in the way quotes from men vs women are handled by various news sources. More than simply looking at the representativity of genders, we want to study the content of the quotes. Is there a difference in the topics men or women are cited on? What is the overal sentiment (positive or negative) associated with the quotes? What kind of language is cited (simpler or more complex)?
+News sources have the power to influence society on a large. So biases can be easily propagated, via the choice of quotes, by their content or sentiment, it is entirely possible to reflect an image (potentially distorted) of a group of people. Is that happening? That's what we want to discover.
 
 ### Research Questions
 
-On this project we set ourselves out to analyze whether there is any fundamental difference in the way quotes from men vs women are handled by various news sources. We want to study:
+With this project we hope to answer the following questions.
 
 - What is the representativity of quotes by gender, and how has it evolved over time?
 - Which are the main topics in the quotes from different genders?

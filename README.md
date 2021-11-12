@@ -54,7 +54,7 @@ In order to conduct this analysis and use these methods, several assumptions wer
 
 01/11 - 07/11 : Exploratory data analysis; Data extraction (samples); Study and implementation of NLP algorithms
 
-08/11 - 12/11 : Creation of notebook; Phase 2 README; Repo clean-up; (PHASE 2 DELIVERY)
+08/11 - 12/11 : Creation of notebook; Phase 2 README; Repo clean-up; (MILESTONE 2 DELIVERY)
 
 15/11 - 21/11 : Runtime optimizations (pandas, spaCy, numpy, sklearn)
 
@@ -64,7 +64,7 @@ In order to conduct this analysis and use these methods, several assumptions wer
 
 06/12 - 12/12 : Crafting 'Data Story'; Working on GitHub Pages
 
-13/12 - 17/12 : Finalize GitHub Pages; Final repo clean-up; (PHASE 3 DELIVERY)
+13/12 - 17/12 : Finalize GitHub Pages; Final repo clean-up; (MILESTONE 3 DELIVERY)
 
 ---
 

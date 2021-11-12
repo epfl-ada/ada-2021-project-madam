@@ -225,7 +225,7 @@ def topics_docs_matrix(lda_model, docword_matrix, show_mat = False, show_dist = 
 
     return df_document_topic, df_topic_distribution
 
-def show_intertopic_distance(lda_model, docword_matrix, vectorizer, in_IDE = False, output_name = 'lda.html'):
+def show_intertopic_distance(lda_model, docword_matrix, vectorizer, output_name = 'lda.html'):
     """
     Function to create a visual representation of the intertopic distance,
     which allows to visually gauge the correctness of the model. It also
@@ -239,13 +239,8 @@ def show_intertopic_distance(lda_model, docword_matrix, vectorizer, in_IDE = Fal
         Document-term matrix.
     vectorizer : sklearn.feature_extraction.text.CountVectorizer
         THE OUTPUT vectorizer FROM grid_search SHOULD BE USED HERE
-    in_IDE : bool
-        If true then assume we're working in an IDE, and so save the output
-        to a separate .html file
-        If false then assume we're in a notebook and we can directly show the
-        output
     output_name : str
-        If in_IDE = true, sets the name of the output file.
+        Sets the name of the output file.
         
     Returns
     -------
@@ -255,10 +250,7 @@ def show_intertopic_distance(lda_model, docword_matrix, vectorizer, in_IDE = Fal
     # create the visual representation
     panel = pyLDAvis.sklearn.prepare(lda_model, docword_matrix, vectorizer, mds='tsne')
 
-    if in_IDE:
-        pyLDAvis.save_html(panel, output_name)
-    else:
-        pyLDAvis.display(panel)
+    pyLDAvis.save_html(panel, output_name)
 
 def get_topics_words(lda_model, vectorizer, show_words = False):
     """

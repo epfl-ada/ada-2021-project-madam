@@ -21,6 +21,8 @@ textstat==0.7.2
 tqdm==4.62.3
 tune_sklearn==0.4.1
 urllib3==1.26.7
+wikidata==0.7.0
+wikipedia==1.4.0
 
 # spacy's model
 # https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0.tar.gz#egg=en_core_web_sm

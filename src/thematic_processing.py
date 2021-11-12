@@ -24,8 +24,6 @@ import pyLDAvis
 import pyLDAvis.sklearn
 import matplotlib.pyplot as plt
 
-from prep_utilities import prep_tokens
-
 def topic_cluster(docs, num_topics = 10, print_res = False):
     """
     Function to perform the topic clustering for a set of documents.
@@ -227,7 +225,7 @@ def topics_docs_matrix(lda_model, docword_matrix, show_mat = False, show_dist = 
 
     return df_document_topic, df_topic_distribution
 
-def show_intertopic_distance(lda_model, docword_matrix, vectorizer):
+def show_intertopic_distance(lda_model, docword_matrix, vectorizer, in_IDE = False, output_name = 'lda.html'):
     """
     Function to create a visual representation of the intertopic distance,
     which allows to visually gauge the correctness of the model. It also
@@ -241,6 +239,13 @@ def show_intertopic_distance(lda_model, docword_matrix, vectorizer):
         Document-term matrix.
     vectorizer : sklearn.feature_extraction.text.CountVectorizer
         THE OUTPUT vectorizer FROM grid_search SHOULD BE USED HERE
+    in_IDE : bool
+        If true then assume we're working in an IDE, and so save the output
+        to a separate .html file
+        If false then assume we're in a notebook and we can directly show the
+        output
+    output_name : str
+        If in_IDE = true, sets the name of the output file.
         
     Returns
     -------
@@ -250,11 +255,10 @@ def show_intertopic_distance(lda_model, docword_matrix, vectorizer):
     # create the visual representation
     panel = pyLDAvis.sklearn.prepare(lda_model, docword_matrix, vectorizer, mds='tsne')
 
-    # if on an IDE, use this
-    # pyLDAvis.save_html(panel, 'lda.html')
-
-    # if on a notebook, use this
-    panel
+    if in_IDE:
+        pyLDAvis.save_html(panel, output_name)
+    else:
+        panel.show()
 
 def get_topics_words(lda_model, vectorizer, show_words = False):
     """
@@ -305,8 +309,6 @@ def make_prediction(new_docs, lda_model, vectorizer, df_topic_keywords):
     """
     THIS FUNCTION GOT KINDA SCREWED UP WHEN WE CHANGED PREP_TOKENS, I NEED TO CORRECT IT.
     """
-
-    clean_docs = prep_tokens(new_docs, del_stop = False)
 
     clean_docs = vectorizer.transform(clean_docs)
     topics_probs = lda_model.transform(clean_docs)

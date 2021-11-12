@@ -4,8 +4,6 @@
 #token preparation
 #filtering unnecessary rows
 #extracting domain names from urls
-#replacing none speakers with next highest probable speaker
-#finding qids for replaced speakers
 #finding speakers' gender
 
 
@@ -182,29 +180,6 @@ def get_website(doc):
         else :
             web_list.append(core[0])
     return web_list
-
-def find_qids(speaker, doc_speaker_attributes):
-    """
-    This function finds qids for missing rows.
-    Since we replaced None speakers those rows have [] as qids.
-    
-    Parameters
-    ----------
-    speaker : str
-        Speaker whom we wish to find the qids
-    doc_speaker_attributes : pandas.DataFrame
-        WHAT IS THIS ?? SOMEBODY FILL THIS IS IN PLZ
-
-    Returns
-    -------
-    qid_list : list
-        List of qids for this speaker
-    """
-    qid_list=[]
-    for ind, lines in doc_speaker_attributes['aliases'].items():
-        if speaker in str(lines):
-            qid_list.append(ind)
-    return qid_list
 
 def find_gender(qids, doc_speaker_attributes):
     """

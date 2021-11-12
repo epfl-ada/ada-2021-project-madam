@@ -183,15 +183,6 @@ def get_website(doc):
             web_list.append(core[0])
     return web_list
 
-"""def replace_none_speaker(doc):
- 
-    This function replaces speakers originally assigned 'None' with the speaker that have second highest probability
-
-    doc_copy=doc.copy()
-
-    doc_copy['speaker'][doc_copy['speaker'] == 'None'] = doc_copy['probas'][doc_copy['speaker'] == 'None'].apply(lambda x: x[1][0])
-    return doc_copy"""
-
 def find_qids(speaker, doc_speaker_attributes):
     """
     This function finds qids for missing rows.
@@ -225,7 +216,7 @@ def find_gender(qids, doc_speaker_attributes):
     qids : list
         List of qids to use to find the gender
     doc_speaker_attributes : pandas.DataFrame
-        WHAT IS THIS ?? SOMEBODY FILL THIS IS IN PLZ
+        Dataframe with information on the speakers
 
     Returns
     -------

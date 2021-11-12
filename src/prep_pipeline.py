@@ -14,7 +14,7 @@ def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lem
     doc : pandas.DataFrame
         Dataframe with the data to pre-process.
     speaker_attributes : pandas.DataFrame
-        WHAT IS IN HERE ?? SOMEBODY FILL THIS IN PLEASE.
+        Dataframe with informations on the speakers.
     fix_contract : bool
         If true, expand contractions (don't -> do not; I'm -> I am;...)
     del_stop : bool
@@ -27,12 +27,6 @@ def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lem
     copy_doc : pandas.DataFrame
         Result of the data provided after having passed through the whole pipeline.
     """
-    
-    # COMMENT ----
-    #
-    # Are there any more columns that we can drop during all of this?
-    #
-    # ------------
     
     # Delete rows with 'None' speaker
     if print_progress: print("Deleting rows with 'None' speaker...")

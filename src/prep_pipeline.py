@@ -5,7 +5,7 @@
 from src.prep_utilities import *
 
 #Pipeline for data prep
-def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True):
+def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True, print_progress = True):
     """
     This function performs the full pipeline to prepare the data taken from Quotebank
     
@@ -35,29 +35,29 @@ def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lem
     # ------------
     
     # Delete rows with 'None' speaker
-    print("Deleting rows with 'None' speaker...")
+    if print_progress: print("Deleting rows with 'None' speaker...")
     copy_doc = doc[doc['speaker'] != 'None']
 
     # get date in YYYY-MM format
-    print("Simplifying date column...")
+    if print_progress: print("Simplifying date column...")
     copy_doc['date'] = copy_doc['date'].apply(lambda x: get_yyyy_mm(x))
 
     # prepare clean tokens
-    print("Tokenizing quotes...")
+    if print_progress: print("Tokenizing quotes...")
     copy_doc['tokens'] = copy_doc['quotation'].apply(
         lambda x: prep_tokens_row(x, fix_contract, del_stop, lemmatize))
 
     # filter out unnecessary rows (by number of words/true words)
-    print("Filtering rows...")
+    if print_progress: print("Filtering rows...")
     copy_doc = filter_quotes(copy_doc)
 
     # get domain names
-    print("Getting url domains...")
+    if print_progress: print("Getting url domains...")
     copy_doc['websites'] = copy_doc['urls'].apply(lambda x: get_website(x))
     copy_doc.drop(columns='urls', inplace=True)
 
     # get the gender of the speaker
-    print("Getting genders...")
+    if print_progress: print("Getting genders...")
     copy_doc['gender'] = copy_doc['qids'].apply(lambda x: find_gender(x, speaker_attributes))
 
     # Drop rows with gender = 'None'

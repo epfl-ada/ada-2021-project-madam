@@ -82,7 +82,7 @@ In order to conduct this analysis and use these methods, several assumptions wer
 
 ### Repo Architecture
 <pre>
-├─── data : (Empty on GitHub) Folder to store the data
+├─── data : (Content .gitignored) Folder to store the data
 ├─── src
 │   ├─── contractions.py : table necessary to expand contractions
 │   ├─── load_models_data.py : automatically download all packages from nltk and spaCy

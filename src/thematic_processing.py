@@ -258,7 +258,7 @@ def show_intertopic_distance(lda_model, docword_matrix, vectorizer, in_IDE = Fal
     if in_IDE:
         pyLDAvis.save_html(panel, output_name)
     else:
-        panel.show()
+        pyLDAvis.display(panel)
 
 def get_topics_words(lda_model, vectorizer, show_words = False):
     """

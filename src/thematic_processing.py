@@ -80,7 +80,7 @@ def topic_cluster(docs, num_topics = 10, print_res = False):
 
     return vectorizer, docword_matrix, lda_output
 
-def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = False):
+def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = False):
     """
     Function to perform grid search and find the optimal hyperparameters.
 
@@ -91,9 +91,11 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
     num_topics : list
         List with the values of num_topics to run 
         through grid search
-    decay_vals : list
-        List with the values of decay rate to run
-        through grid search
+    doc_topic_list : list
+        List with distributions for the document-topic prior probabilities.
+        Can be given as absolute values or as a function of 'num_topics'. If as
+        a function of 'num_topics' they **need** to be in a string with the
+        expression 'topic', as it will be eval'd for that variable.
     print_res : bool
         If true, print the results after grid search
     plot_res : bool
@@ -111,7 +113,7 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
         on the left out data. 
     """
     
-    docs_split = [[word for word in doc.split()] for doc in docs]
+    docs_split = [[word for word in doc.split()] for doc in docs if doc != '']
     vectorizer = CountVectorizer(analyzer='word',
                                  min_df=10,                        # minimum read occurences of a word
                                  stop_words='english',             # remove stop words
@@ -126,19 +128,17 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
     dtm1 = docword_matrix[:len(docs)//2]
     dtm2 = docword_matrix[len(docs)//2:]
     
-    best = {'n_components' : num_topics[0], 'learning_decay': decay_vals[0]}
     # perfect coherence is 0, then it flutuates to either side
-    coherence_vals = np.full((len(decay_vals), len(num_topics)), np.inf)
+    coherence_vals = np.full((len(doc_topic_dist), len(num_topics)), np.inf)
     for i_t, topic in enumerate(num_topics):
-        for i_v, val in enumerate(decay_vals):
+        for i_d, dist in enumerate(doc_topic_dist):
             # we initiate the model for the given parameters
             lda_model = LatentDirichletAllocation(n_components=topic,                  # Number of topics
-                                                  doc_topic_prior = 1/(10*topic),
-                                                  learning_decay = val,                # learning decay
+                                                  doc_topic_prior = eval(dist),
                                                   max_iter=10,                         # Max learning iterations
                                                   learning_method='online',
                                                   random_state=100,                    # Random state
-                                                  batch_size=min(1000, len(docs)//8),   # n docs in each learning iter
+                                                  batch_size=min(1000, len(docs)//8),  # n docs in each learning iter
                                                   n_jobs = -1                          # Use all available CPUs
                                                   )
     
@@ -153,8 +153,8 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
                                                     
             # and we calculate the coherence for data2 
             # we are only interested in the absolute value of the coherence for comparison!!
-            coherence = metric_coherence_gensim(measure='c_npmi', 
-                                                top_n=10,
+            coherence = metric_coherence_gensim(measure='c_v', 
+                                                top_n=30,
                                                 dtm = np.array(dtm2.toarray()),
                                                 topic_word_distrib=np.array([topic for topic in topic_words.values()]),
                                                 vocab=np.array([x for x in vectorizer.vocabulary_.keys()]),
@@ -169,8 +169,8 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
                 word_idx = np.argsort(comp)[::-1]
                 topic_words[top] = [vectorizer.get_feature_names()[i] for i in word_idx]
                         
-            coherence += metric_coherence_gensim(measure='c_npmi', 
-                                                 top_n=10,
+            coherence += metric_coherence_gensim(measure='c_v', 
+                                                 top_n=30,
                                                  dtm = np.array(dtm1.toarray()),
                                                  topic_word_distrib=np.array([topic for topic in topic_words.values()]),
                                                  vocab=np.array([x for x in vectorizer.vocabulary_.keys()]),
@@ -182,24 +182,27 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
             coherence = coherence / 2  
             if np.isinf(coherence):
                 print('ERROR!! INFINITY FOUND')
-                coherence *= -1
+            #if coherence < 0:
+            #    coherence = -coherence
             print(coherence)
             
-            coherence_vals[i_v,i_t] = coherence 
+            coherence_vals[i_d,i_t] = coherence 
             
     best_coherence = np.amax(coherence_vals)
     best_params = np.where(coherence_vals == best_coherence)
         
-    print(f'Best coherence from cross-validation is {best_coherence} for {num_topics[best_params[1][0]]} topics and a learning rate of {decay_vals[best_params[0][0]]}')
+    print(f'Best coherence from cross-validation is {best_coherence} for {num_topics[best_params[1][0]]} topics and a document-topic prior distribution of {doc_topic_dist[best_params[0][0]]}.')
+    
+    
+    doc_topic_prior = doc_topic_dist[best_params[0][0]].replace('topic', 'num_topics[best_params[1][0]]')
     
     best_model = LatentDirichletAllocation(n_components=num_topics[best_params[1][0]],   # Number of topics
                                            max_iter=10,                               # Max learning iterations
-                                           doc_topic_prior = 1/(10*topic),
+                                           doc_topic_prior = eval(doc_topic_prior),
                                            learning_method='online',
                                            random_state=100,                          # Random state
                                            batch_size=min(1000, len(docs)//8),         # n docs in each learning iter
                                            n_jobs = -1,                               # Use all available CPUs
-                                           learning_decay = decay_vals[best_params[0][0]]
                                            )
 
     # find the document term matrix for the documents provided
@@ -211,8 +214,8 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
         word_idx = np.argsort(comp)[::-1]
         topic_words[top] = [vectorizer.get_feature_names()[i] for i in word_idx]
 
-    coherence = metric_coherence_gensim(measure='c_npmi', 
-                                        top_n=15,
+    coherence = metric_coherence_gensim(measure='c_v', 
+                                        top_n=30,
                                         dtm = np.array(docword_matrix.toarray()),
                                         topic_word_distrib=np.array([topic for topic in topic_words.values()]),
                                         vocab=np.array([x for x in vectorizer.vocabulary_.keys()]),
@@ -223,19 +226,30 @@ def grid_search(docs, num_topics, decay_vals, print_res = False, plot_res = Fals
         # Model Parameters
         print("Best Model's Params: ", best_model.n_components, best_model.learning_decay)
         # Coherence
-        print("Absolute of Coherence for full data: ", abs(coherence))
+        print("Coherence for full data: ", coherence)
 
     if plot_res:
         # get the coherences for all the values of learning decay to graph
-        plot_coherences = [[coherence for coherence in coherences] for coherences in coherence_vals]
+        x = []
+        y = []
+        for coherences in coherence_vals:
+            temp_x = []
+            temp_y = []
+            for index, coherence in enumerate(coherences):
+                if not np.isinf(coherence):
+                    temp_x.append(num_topics[index])
+                    temp_y.append(coherence)
+            x.append(temp_x)
+            y.append(temp_y)
+        # plot_coherences = [[coherence for coherence in coherences] for coherences in coherence_vals]
         # Show graph
         plt.figure(figsize=(12, 8))
-        for index, plot in enumerate(plot_coherences):
-            plt.plot(num_topics, plot, label=str(decay_vals[index]))
+        for index, plot in enumerate(x):
+            plt.plot(plot, y[index], label=str(doc_topic_dist[index]))
         plt.title("Choosing Optimal LDA Model")
         plt.xlabel("Num Topics")
         plt.ylabel("Text Coherence Scores")
-        plt.legend(title='Learning decay', loc='best')
+        plt.legend(title='Document-Topic Prior', loc='best')
         plt.show()
 
     return vectorizer, docword_matrix, best_model

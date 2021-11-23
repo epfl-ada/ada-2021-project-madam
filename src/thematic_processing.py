@@ -80,7 +80,7 @@ def topic_cluster(docs, num_topics = 10, print_res = False):
 
     return vectorizer, docword_matrix, lda_output
 
-def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = False):
+def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = False, coh_method = 'u_mass'):
     """
     Function to perform grid search and find the optimal hyperparameters.
 
@@ -112,8 +112,10 @@ def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = 
         which gave highest score (or smallest loss if specified)
         on the left out data. 
     """
-    
-    docs_split = [[word for word in doc.split()] for doc in docs if doc != '']
+    print(len(docs))
+    docs = [doc for doc in docs if len(doc.split()) > 5]
+    docs_split = [[word for word in doc.split()] for doc in docs]
+    print(len(docs))
     vectorizer = CountVectorizer(analyzer='word',
                                  min_df=10,                        # minimum read occurences of a word
                                  stop_words='english',             # remove stop words
@@ -152,14 +154,13 @@ def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = 
                 topic_words[top] = [vectorizer.get_feature_names()[i] for i in word_idx]
                                                     
             # and we calculate the coherence for data2 
-            # we are only interested in the absolute value of the coherence for comparison!!
-            coherence = metric_coherence_gensim(measure='c_v', 
+            coherence = metric_coherence_gensim(measure=coh_method,
                                                 top_n=30,
                                                 dtm = np.array(dtm2.toarray()),
                                                 topic_word_distrib=np.array([topic for topic in topic_words.values()]),
                                                 vocab=np.array([x for x in vectorizer.vocabulary_.keys()]),
                                                 texts=docs_split[len(docs)//2:],
-                                                return_mean = True)                           
+                                                return_mean = True)             
             
             # and now we repeat it, but reverse it, data2 to train and data1 to test
             lda_model.fit(dtm2)
@@ -169,7 +170,7 @@ def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = 
                 word_idx = np.argsort(comp)[::-1]
                 topic_words[top] = [vectorizer.get_feature_names()[i] for i in word_idx]
                         
-            coherence += metric_coherence_gensim(measure='c_v', 
+            coherence += metric_coherence_gensim(measure=coh_method,
                                                  top_n=30,
                                                  dtm = np.array(dtm1.toarray()),
                                                  topic_word_distrib=np.array([topic for topic in topic_words.values()]),
@@ -214,7 +215,7 @@ def grid_search(docs, num_topics, doc_topic_dist, print_res = False, plot_res = 
         word_idx = np.argsort(comp)[::-1]
         topic_words[top] = [vectorizer.get_feature_names()[i] for i in word_idx]
 
-    coherence = metric_coherence_gensim(measure='c_v', 
+    coherence = metric_coherence_gensim(measure=coh_method,
                                         top_n=30,
                                         dtm = np.array(docword_matrix.toarray()),
                                         topic_word_distrib=np.array([topic for topic in topic_words.values()]),

@@ -5,7 +5,7 @@
 from src.prep_utilities import *
 
 #Pipeline for data prep
-def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True, print_progress = True):
+def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lemmatize = True, print_progress = True, min_size = 1, min_true_size = 1):
     """
     This function performs the full pipeline to prepare the data taken from Quotebank
     
@@ -43,7 +43,7 @@ def prep_docs(doc, speaker_attributes, fix_contract = True, del_stop = True, lem
 
     # filter out unnecessary rows (by number of words/true words)
     if print_progress: print("Filtering rows...")
-    copy_doc = filter_quotes(copy_doc)
+    copy_doc = filter_quotes(copy_doc, min_size, min_true_size)
 
     # get domain names
     if print_progress: print("Getting url domains...")

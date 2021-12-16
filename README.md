@@ -1,4 +1,26 @@
-## MIND THE (GENDER) GAP
+## Milestone 3 Update
+
+### Data Story
+The data story for this project is present in [this link](https://khanhnguyen15.github.io/project-madam-website/). It was made using [Jekyll](https://jekyllrb.com/) and the [TeXt Theme](https://tianqi.name/jekyll-TeXt-theme/).
+
+### Analyses
+The analyses present in the website , made in the notebook `Data_story_analysis.ipynb`, are the following (all of them for each gender):
+ 1. Percentage of quote occurrences and speakers;
+ 2. Most quoted speakers;
+ 3. Topic distribution in quotes;
+ 4. Sentiment scores in general, and in conservative vs liberal news websites;
+ 5. Text complexity in conservative vs liberal news websites.
+
+### Internal Organizaton
+André: Analyses 1 and 2. Writing data story.
+Medya: Analysis 4. Writing data story.
+Tomás: Analyses 3 and 5. Writing data story.
+Khahn: Setting up website structure, repo and theme.
+
+### Aditional Notes
+The processed quotes for each year `quotes-XXXX-prep` files were generated in the same way as in Milestone 2, but saved to `json.bz2` files (inside the `/data/` folder), instead of `.parquet`, since it allows for reading in chunks.
+
+## MIND THE (GENDER) GAP (Milestone 2)
 
 ### ABSTRACT
 
@@ -80,9 +102,10 @@ In order to conduct this analysis and use these methods, several assumptions wer
 
 ---
 
-### Repo Architecture
+### Repo Architecture (updated for Milestone 3)
 <pre>
-├─── data : (Content .gitignored) Folder to store the data
+├─── data : (Content .gitignored) Folder to store the processed quotes
+├─── data_processed: Folder to store the data from the various analyses in Data_story_analysis.ipynb
 ├─── src
 │   ├─── contractions.py : table necessary to expand contractions
 │   ├─── load_models_data.py : automatically download all packages from nltk and spaCy
@@ -91,7 +114,8 @@ In order to conduct this analysis and use these methods, several assumptions wer
 │   ├─── sampling_data.py : generate a 1/20 sample of all quotes
 │   ├─── text_scores.py : measure the complexity of the quotes
 │   └─── thematic_processing.py : clustering quotes by topics
-├─── Data_Prep.ipynb : Phase 2 notebook
+├─── Data_Prep.ipynb : Milestone 2 notebook
+├─── Data_story_analysis.ipynb : Milestone 3 notebook
 ├─── README.md : [ERROR] Infinite Recursion :)
 └─── requirements.txt : packages, and versions, used
 </pre>

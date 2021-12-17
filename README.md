@@ -53,8 +53,11 @@ To study the different aspects mentioned in the research questions, several meth
 
 ### Internal Organization
 André: Analyses 1 and 2. Writing data story. Data Extraction. Runtime optimizations.
+
 Medya: Analysis 4. Writing data story. Data Extraction.
+
 Tomás: Analyses 3 and 5. Writing data story. Repo cleaning. Study of NLP methods.
+
 Khahn: Setting up website structure, repo, and theme. Data Extraction. Study of NLP methods.
 
 

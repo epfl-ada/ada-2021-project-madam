@@ -80,6 +80,7 @@ Khahn: Setting up website structure, repo, and theme. Data Extraction. Study of 
 <pre>
 ├─── data: (Content .gitignored) Folder to store the processed quotes
 ├─── data_processed: Folder to store the data from the various analyses in Data_story_analysis.ipynb
+├─── plotly: Folder containing all the .html dynamic plots generated for the website
 ├─── src
 │   ├─── contractions.py: table necessary to expand contractions (ended up not using it for Milestone 3)
 │   ├─── load_models_data.py: automatically download all packages from nltk and spaCy

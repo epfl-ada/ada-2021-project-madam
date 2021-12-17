@@ -48,6 +48,7 @@ To study the different aspects mentioned in the research questions, several meth
 - **Text Readability / Complexity:** Using the [Dale-Chall Readability Formula](https://en.wikipedia.org/wiki/Dale%E2%80%93Chall_readability_formula) we can measure the 'difficulty' of any given text.
 
 **_Note:_** These methods required the usage of external packages. For a detailed list see [requirements.txt](https://github.com/epfl-ada/ada-2021-project-madam/blob/main/requirements.txt).
+
 ---
 
 ### Internal Organization
@@ -80,13 +81,13 @@ Khahn: Setting up website structure, repo, and theme. Data Extraction. Study of 
 ├─── data: (Content .gitignored) Folder to store the processed quotes
 ├─── data_processed: Folder to store the data from the various analyses in Data_story_analysis.ipynb
 ├─── src
-│   ├─── contractions.py: table necessary to expand contractions
+│   ├─── contractions.py: table necessary to expand contractions (ended up not using it for Milestone 3)
 │   ├─── load_models_data.py: automatically download all packages from nltk and spaCy
 │   ├─── prep_pipeline.py: a pipeline to process quotes and create a DataFrame with the features for analysis
 │   ├─── prep_utilities.py: NLP tasks and engineer features for the dataset 
 │   ├─── sampling_data.py: generate a 1/20 sample of all quotes
 │   ├─── text_scores.py: measure the complexity of the quotes
-│   └─── thematic_processing.py: clustering quotes by topics
+│   └─── thematic_processing.py: clustering quotes by topics with LDA (ended up not using it for Milestone 3)
 ├─── Data_Prep.ipynb: Milestone 2 notebook
 ├─── Data_story_analysis.ipynb: Milestone 3 notebook
 ├─── README.md: [ERROR] Infinite Recursion :)

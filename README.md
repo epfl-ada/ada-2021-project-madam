@@ -58,7 +58,7 @@ Medya: Analysis 4. Writing data story. Data Extraction.
 
 Tomás: Analyses 3 and 5. Writing data story. Repo cleaning. Study of NLP methods.
 
-Khahn: Setting up website structure, repo, and theme. Data Extraction. Study of NLP methods.
+Khanh: Setting up website structure, repo, and theme. Data Extraction. Study of NLP methods.
 
 
 ### Timeline

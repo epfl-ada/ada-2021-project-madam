@@ -89,7 +89,8 @@ Khahn: Setting up website structure, repo, and theme. Data Extraction. Study of 
 │   ├─── text_scores.py: measure the complexity of the quotes
 │   └─── thematic_processing.py: clustering quotes by topics with LDA (ended up not using it for Milestone 3)
 ├─── Data_Prep.ipynb: Milestone 2 notebook
-├─── Data_story_analysis.ipynb: Milestone 3 notebook
+├─── Data_story_analysis.ipynb: Notebook with all the analyses conducted for Milestone 3
+├─── Quotes_prep.ipynb: Notebook used to generate the prepared files from Quotebank
 ├─── README.md: [ERROR] Infinite Recursion :)
 └─── requirements.txt: packages and versions used
 </pre>
